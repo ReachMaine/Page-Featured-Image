@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Page Featured Image
+Plugin Name: zig's Page Featured Image
 Description: A widget to display a featured image of a page on multisite.
 Version: 0.8
 
@@ -26,7 +26,7 @@ class zpfi_widget extends WP_Widget {
   		parent::__construct(
   				'zpfi_wigdet', // Base ID
   				__("zig's page featured image widget", 'zpfi_text_domain'), // Name
-  				array( 'description' => __( 'Widget to display page featured image', 'zpfi_text_domain' ), ) // Args
+  				array( 'description' => __( 'zigs Widget to display page featured image', 'zpfi_text_domain' ), ) // Args
   			);
     }
 
@@ -42,11 +42,6 @@ class zpfi_widget extends WP_Widget {
 
   		$html = "";
   		//$html = '<nav class="widget widget_hcclist" >';
-  		$html .=  $args['before_widget'];
-   		//$html.= ($title!='')?'<h5 class="widget-title"><a href="'.$calendar_blog_url.'/events/">'.$title.'</a></h5>':'';
-  		if ( ! empty( $title ) ) {
-  				$html.= $args['before_title'] . $title . $args['after_title'];
-  		}
 
   		/* if ( is_multisite() ) {
   			$blog_details = get_blog_details($blogid);
@@ -58,21 +53,26 @@ class zpfi_widget extends WP_Widget {
   		if ($page_number) {
   			$thumb_url = get_the_post_thumbnail($page_number, array(300, 250) );
   			if ($thumb_url){
+          $html .=  $args['before_widget'];
+      		if ( ! empty( $title ) ) {
+      				$html.= $args['before_title'] . $title . $args['after_title'];
+      		}
+
   				$html .= '<a href="'.esc_url(get_post_permalink($page_number)).'" >';
           	$html .= $thumb_url;
           $html .=  '</a>';
+          $html .= $args['after_widget'];
   			}
   		}
 
   		//$html .= '</nav>';
-  		$html .= $args['after_widget'];
-      $html .= "<p>ZIG HERE!!!</p>";
+
   		echo $html;
   	}
 
    	public function form( $instance ) {
   		// outputs the options form on admin
-  		$blogid = isset($instance['blogid']) ? esc_attr( $instance['blogid'] ) : 12;
+  	//	$blogid = isset($instance['blogid']) ? esc_attr( $instance['blogid'] ) : 12;
   		$title     = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
   		$page_number    = isset( $instance['page_number'] ) ? absint( $instance['page_number'] ) : 6;
   		?>
@@ -80,10 +80,10 @@ class zpfi_widget extends WP_Widget {
   			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title (optional):' ); ?></label>
   			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
   		</p>
-  		<p>
+  	<?php /* <p>
           	<label for="<?php echo $this->get_field_id( 'blogid' ); ?>"><?php _e( 'Blog ID' ); ?></label>
   			<input id="<?php echo $this->get_field_id( 'blogid' ); ?>" name="<?php echo $this->get_field_name( 'blogid' ); ?>" type="text" value="<?php echo $blogid; ?>" size="3" />
-  		</p>
+  		</p> */ ?>
   		<p>
       	<label for="<?php echo $this->get_field_id( 'page_number' ); ?>"><?php _e( 'Page ID:' ); ?></label>
   			<input id="<?php echo $this->get_field_id( 'page_number' ); ?>" name="<?php echo $this->get_field_name( 'page_number' ); ?>" type="text" value="<?php echo $page_number; ?>" size="3" />
@@ -97,7 +97,7 @@ class zpfi_widget extends WP_Widget {
 
   		$instance = array();
   		$instance['title'] = strip_tags($new_instance['title']);
-  		$instance['blogid'] = strip_tags($new_instance['blogid']);
+  		//$instance['blogid'] = strip_tags($new_instance['blogid']);
   		$instance['page_number'] = (int) $new_instance['page_number'];
   		return $instance;
 
